@@ -1,0 +1,3 @@
+# Defaults for the 'demo' experiment group.
+entrypoint: Rscript analysis/demo_effect.R
+sql_file: analysis/demo_cohort.sql

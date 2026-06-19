@@ -1,0 +1,4 @@
+# Cross-experiment defaults.
+# Layered: _base.yaml -> <group>.yaml -> record frontmatter.
+# The runner also injects `out_dir` (the per-run directory) at dispatch time.
+seed: 42

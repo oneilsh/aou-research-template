@@ -1,0 +1,20 @@
+[project]
+name = "aou-research-template"
+version = "0.1.0"
+description = "Safe, reproducible AoU research scaffold for human+agent collaboration"
+requires-python = ">=3.11"
+dependencies = ["pyyaml>=6.0"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0", "ruff>=0.5", "pre-commit>=3.7", "nbstripout>=0.7"]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["utilities*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
