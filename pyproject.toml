@@ -2,7 +2,7 @@
 name = "aou-research-template"
 version = "0.1.0"
 description = "Safe, reproducible AoU research scaffold for human+agent collaboration"
-requires-python = ">=3.11"
+requires-python = ">=3.10"
 dependencies = ["pyyaml>=6.0"]
 
 [project.optional-dependencies]

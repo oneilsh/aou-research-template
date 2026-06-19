@@ -6,7 +6,7 @@ to walk you through.
 
 ## 1. Install
 
-You need Python 3.11+ and R. Then:
+You need Python 3.10+ and R. Then:
 
 ```
 make install            # Python infra + dev tools
