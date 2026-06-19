@@ -20,5 +20,12 @@ What's here:
 - `analysis/` — where your code goes. The demo is R + SQL; Python works too.
 - `experiments/` + `docs/experiments/` — each run is one config + one record.
 
-Start with `GETTING_STARTED.md`. Or open it with Claude and say "walk me through
-getting started."
+## Using this template
+
+This is a GitHub template repository. Click **Use this template** to create your
+own study repo from it — a clean copy with its own history, not a fork. Then
+rename the project in `pyproject.toml` and work through `GETTING_STARTED.md`, or
+open it with Claude and say "walk me through getting started."
+
+The shipped `0001-demo` experiment is a worked example you run once to see the
+loop; keep it as a reference or replace it with your own.
