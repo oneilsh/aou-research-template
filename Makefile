@@ -26,7 +26,9 @@ run-exp:
 	python scripts/run_experiment.py $(if $(ID),--id $(ID),--next)
 
 # Discover Verily Workbench resources into .workspace_env (run inside AoU).
+# Installs the R run-path packages first (binaries when available, only if missing).
 setup-workspace:
+	Rscript scripts/ensure_r_packages.R
 	python scripts/setup_workspace.py $(if $(CDR),--cdr $(CDR),)
 
 .PHONY: new-exp

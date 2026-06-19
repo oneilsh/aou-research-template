@@ -16,7 +16,7 @@ make precommit-install  # git hooks that block data/secrets and strip notebooks
 Install the R packages the demo uses:
 
 ```
-R -e 'install.packages(c("DBI","duckdb","bigrquery","Eunomia","digest","yaml"))'
+R -e 'install.packages(c("DBI","duckdb","bigrquery","Eunomia","digest","yaml"), repos="https://cloud.r-project.org")'
 ```
 
 (`Eunomia` is the OHDSI synthetic-data package; see its README if it needs the
@@ -55,10 +55,16 @@ inside the R process; only aggregates are printed, so only aggregates land in
 Inside Verily Workbench, after pulling this repo:
 
 ```
-make setup-workspace    # discovers your project/CDR/buckets into .workspace_env
+make setup-workspace    # installs R run-path packages (binaries) + discovers
+                        #   your project/CDR/buckets into .workspace_env
 source .workspace_env
 make run-exp ID=1
 ```
+
+`setup-workspace` installs the R packages the BigQuery path needs (`DBI`,
+`bigrquery`, `digest`, `yaml`) — only the missing ones, as precompiled binaries
+via Posit Package Manager when your image's distro is detected. So the manual
+`install.packages` in step 1 is the laptop set; in AoU you don't need to run it.
 
 `pick_connection()` (in `analysis/utilities.R`) sees `WORKSPACE_CDR` is set and
 connects to BigQuery instead of DuckDB — the same `demo_cohort.sql` runs against
