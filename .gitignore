@@ -25,3 +25,12 @@ data/
 
 # Allow tiny synthetic test fixtures only
 !**/tests/data/
+
+# Agent-harness scratch — never useful in a template copy.
+# Note: .claude/settings.json IS committed (shared, safe permission allowlist);
+# only personal settings and per-session scratch are ignored here. Users remain
+# free to commit their own .claude/agents, skills, and commands.
+.claude/settings.local.json
+.claude/handoffs/
+.claude/plans/
+.superpowers/
