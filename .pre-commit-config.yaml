@@ -12,7 +12,7 @@ repos:
   - repo: local
     hooks:
       - id: no-data-files-outside-tests
-        name: Prevent data files outside tests/*/data/ or docs/
+        name: Prevent data files outside tests/*/data/ or framework/docs/
         entry: framework/scripts/check_no_data_files.sh
         language: script
         files: '\.(parquet|csv|feather|arrow|npz|duckdb)$'

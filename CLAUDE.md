@@ -21,8 +21,8 @@ Your job is to make the safe path the easy path.
 - OK: aggregate counts, summary statistics, effect estimates, p-values, and
   aggregate-only plots (group means/distributions — never one mark per person).
 - NOT OK: any row-level / per-person output. It does not cross back at all.
-- Hashing an id (`hash_id()` in analysis/utilities.R) is only a fallback for the
-  rare case a single id must be named — not a license to emit row-level data.
+- Hashing an id (`hash_id()` in framework/shared/utilities.R) is only a fallback
+  for the rare case a single id must be named — not a license to emit row-level data.
 - When inspecting per-person data interactively, reduce to an aggregate first
   (e.g. group counts or means) rather than printing raw rows — the scrubber drops
   a `person_id` header line but cannot catch the bare numeric rows beneath a raw
@@ -30,9 +30,9 @@ Your job is to make the safe path the easy path.
 
 ## Prefer the runner
 
-Run analyses through `make run-exp` (which calls scripts/run_experiment.py).
+Run analyses through `make run-exp` (which calls the `run-experiment` console script).
 It streams output live but writes only a *scrubbed* copy to
-`runs/<exp>/summary.md`. That scrubbing — `utilities/sanitize.py` — is what
+`experiments/<exp>/runs/summary.md`. That scrubbing — `framework/utilities/sanitize.py` — is what
 makes the paste-back step trustworthy. If you add output that prints anything
 per-person, extend `PATIENT_PATTERNS` there. Experiment `entrypoint` values must
 be repo-relative paths (not absolute), since the runner records them verbatim
@@ -40,14 +40,15 @@ into the committed `summary.md`.
 
 ## Layout and boundaries
 
-- `utilities/` — pure-Python infrastructure (scrubbing, layered config, runner,
-  workspace discovery). Must never import from `analysis/`.
-- `analysis/` — the researcher's code (R/SQL/Python). May be any language; the
-  runner dispatches the experiment's declared `entrypoint`.
-- `experiments/defaults/` + `docs/experiments/` — layered config and the
-  per-run records. See docs/experiments/README.md.
-- `data/`, `runs/`, `.env`, `.workspace_env` are gitignored. Never commit data
-  or secrets.
+- `framework/utilities/` — pure-Python infrastructure (scrubbing, layered config,
+  runner, workspace discovery). Must never import from experiment folders.
+- `experiments/<NNNN-slug>/` — each experiment is self-contained: `config.yaml`,
+  `README.md`, analysis scripts, and SQL live here. Shared R helpers are in
+  `framework/shared/utilities.R`.
+- `experiments/_defaults.yaml` — base config merged under every experiment's
+  `config.yaml`. See `experiments/_template/` for the scaffold template.
+- `data/`, `experiments/*/runs/`, `.env`, `.workspace_env` are gitignored. Never
+  commit data or secrets.
 
 ## Local vs AoU
 

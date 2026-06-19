@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# Reject staged data files outside tests/*/data/ and docs/.
+# Reject staged data files outside tests/*/data/ and framework/docs/.
 # Pre-commit passes candidate file paths as arguments.
 set -euo pipefail
 status=0
 for f in "$@"; do
   case "$f" in
-    tests/data/*|tests/*/data/*|*/tests/data/*|*/tests/*/data/*|docs/*)
+    tests/data/*|tests/*/data/*|*/tests/data/*|*/tests/*/data/*|framework/docs/*)
       ;;
     *)
       echo "ERROR: data file outside allowed paths: $f"

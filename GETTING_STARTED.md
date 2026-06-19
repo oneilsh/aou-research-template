@@ -38,17 +38,17 @@ you can query exactly like the CDR.
 make run-exp ID=1
 ```
 
-This runs experiment `0001-demo` (see `docs/experiments/0001-demo.md`): a
-t-test of per-person condition counts by sex, plus one aggregate plot. Look at
-what it wrote:
+This runs experiment `0001-demo`: a t-test of per-person condition counts
+between the two most populous gender groups (labeled from the `concept` table),
+plus one aggregate plot. Look at what it wrote:
 
-- `runs/0001-demo/summary.md` — the scrubbed record. This is what's safe to copy
-  back. Notice it has the t-test and CI, but no per-person rows.
-- `runs/0001-demo/demo_effect.png` — an aggregate-only plot.
+- `experiments/0001-demo/runs/summary.md` — the scrubbed record. This is what's
+  safe to copy back. Notice it has the t-test and CI, but no per-person rows.
+- `experiments/0001-demo/runs/demo_effect.png` — an aggregate-only plot.
 
-The query in `analysis/demo_cohort.sql` returns per-person rows, but those stay
-inside the R process; only aggregates are printed, so only aggregates land in
-`summary.md`. That's the safety model in miniature.
+The query in `experiments/0001-demo/demo_cohort.sql` returns per-person rows,
+but those stay inside the R process; only aggregates are printed, so only
+aggregates land in `summary.md`. That's the safety model in miniature.
 
 ## 4. The same code in AoU
 
@@ -66,10 +66,10 @@ make run-exp ID=1
 via Posit Package Manager when your image's distro is detected. So the manual
 `install.packages` in step 1 is the laptop set; in AoU you don't need to run it.
 
-`pick_connection()` (in `analysis/utilities.R`) sees `WORKSPACE_CDR` is set and
-connects to BigQuery instead of DuckDB — the same `demo_cohort.sql` runs against
-the real CDR. Review `runs/0001-demo/summary.md`, then copy the aggregate result
-back to your laptop / the agent.
+`pick_connection()` (in `framework/shared/utilities.R`) sees `WORKSPACE_CDR` is
+set and connects to BigQuery instead of DuckDB — the same `demo_cohort.sql` runs
+against the real CDR. Review `experiments/0001-demo/runs/summary.md`, then copy
+the aggregate result back to your laptop / the agent.
 
 Note on SQL: the demo SQL is kept simple so one query runs on both DuckDB and
 BigQuery. A real analysis may need dataset-qualified table names in BigQuery;
@@ -81,9 +81,9 @@ adjust the SQL for the AoU path if so.
 make new-exp SLUG=my-question
 ```
 
-Edit the new `docs/experiments/NNNN-my-question.md` (set its Intent, tweak
-config in the frontmatter), point its `entrypoint` at your script in
-`analysis/`, and `make run-exp`.
+This creates `experiments/NNNN-my-question/` with a `config.yaml` and `README.md`.
+Edit the config to point `entrypoint` at your script (which you put in the same
+folder or anywhere repo-relative), and `make run-exp`.
 
 ## Plots and the air-gap
 

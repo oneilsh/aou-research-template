@@ -14,7 +14,7 @@ against the CDR. Produces a Welch t-test and one aggregate-only plot — both sa
 to carry back across the air-gap.
 
 ## Results
-<after `make run-exp`, paste the scrubbed runs/summary.md here>
+<after `make run-exp ID=1`, paste the scrubbed experiments/0001-demo/runs/summary.md here>
 
 ## Interpretation
 <aggregate t-test result and what it shows about the loop, not the biology>

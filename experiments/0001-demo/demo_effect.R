@@ -1,10 +1,10 @@
 #!/usr/bin/env Rscript
 # Demo entrypoint. Invoked by the runner as:
-#   Rscript analysis/demo_effect.R --config runs/0001-demo/config.yaml
+#   Rscript experiments/0001-demo/demo_effect.R --config experiments/0001-demo/runs/config.yaml
 # Row-level query results stay in this process; only aggregates are printed,
 # so the scrubbed summary.md carries nothing patient-level.
 suppressPackageStartupMessages({ library(DBI); library(yaml) })
-source("analysis/utilities.R")
+source("framework/shared/utilities.R")
 
 args <- commandArgs(trailingOnly = TRUE)
 cfg_path <- args[which(args == "--config") + 1]
@@ -28,7 +28,7 @@ cat(sprintf("[demo] 95%% CI of mean difference: [%.3f, %.3f]\n",
             res$conf.int[1], res$conf.int[2]))
 
 # Aggregate-only plot: group means +/- standard error. No per-person marks.
-out_dir <- cfg$out_dir %||% "runs/0001-demo"
+out_dir <- cfg$out_dir %||% "experiments/0001-demo/runs"
 dir.create(out_dir, showWarnings = FALSE, recursive = TRUE)
 ses <- tapply(dat$n_conditions, dat$grp, function(v) sd(v) / sqrt(length(v)))
 png(file.path(out_dir, "demo_effect.png"), width = 600, height = 400)

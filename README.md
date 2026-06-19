@@ -15,10 +15,11 @@ edit locally (you + agent) -> push -> pull in Verily -> run vs CDR -> copy aggre
 
 What's here:
 
-- `utilities/` — the Python that makes the loop safe and repeatable: output
-  scrubbing, layered run config, a language-agnostic runner, workspace setup.
-- `analysis/` — where your code goes. The demo is R + SQL; Python works too.
-- `experiments/` + `docs/experiments/` — each run is one config + one record.
+- `framework/utilities/` — the Python that makes the loop safe and repeatable:
+  output scrubbing, layered run config, a language-agnostic runner, workspace setup.
+- `experiments/` — each experiment is a self-contained folder with its config,
+  analysis scripts, and a gitignored `runs/` output directory.
+- `framework/shared/utilities.R` — shared R helpers (`pick_connection`, `hash_id`).
 
 ## Using this template
 
