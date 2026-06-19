@@ -9,7 +9,6 @@ import sys
 from pathlib import Path
 
 _RECORD_RE = re.compile(r"^(\d{4})-.+\.md$")
-REPO = Path(__file__).resolve().parent.parent
 
 
 def next_id(experiments_dir: Path) -> int:
@@ -28,11 +27,11 @@ def scaffold(slug: str, experiments_dir: Path, template_path: Path, today: str) 
     return out
 
 
-def main(argv: list[str] | None = None) -> int:
+def main(argv=None) -> int:
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument("slug", help="short kebab-case slug, e.g. 'sex-condition-count'")
-    p.add_argument("--experiments-dir", default=str(REPO / "docs" / "experiments"))
-    p.add_argument("--template", default=str(REPO / "docs" / "experiments" / "_template.md"))
+    p.add_argument("slug", help="short kebab-case slug")
+    p.add_argument("--experiments-dir", default="docs/experiments")
+    p.add_argument("--template", default="docs/experiments/_template.md")
     args = p.parse_args(argv)
     today = _dt.date.today().isoformat()
     out = scaffold(args.slug, Path(args.experiments_dir), Path(args.template), today)

@@ -13,6 +13,6 @@ repos:
     hooks:
       - id: no-data-files-outside-tests
         name: Prevent data files outside tests/*/data/ or docs/
-        entry: scripts/check_no_data_files.sh
+        entry: framework/scripts/check_no_data_files.sh
         language: script
         files: '\.(parquet|csv|feather|arrow|npz|duckdb)$'

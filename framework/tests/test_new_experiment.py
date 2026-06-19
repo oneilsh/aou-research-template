@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from scripts.new_experiment import scaffold, next_id
+from utilities.cli.new import scaffold, next_id
 
 
 def _tmpl(tmp_path):

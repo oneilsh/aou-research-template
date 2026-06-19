@@ -2,7 +2,7 @@ from pathlib import Path
 
 from utilities.config import effective_config
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parent.parent.parent
 
 
 def test_demo_effective_config():

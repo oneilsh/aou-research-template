@@ -2,7 +2,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parent.parent.parent
 
 
 def test_run_cli_dispatches_next(tmp_path):
@@ -15,8 +15,8 @@ def test_run_cli_dispatches_next(tmp_path):
     (exp / "0001-demo.md").write_text("---\nid: 1\ngroup: demo\nstatus: pending\n---\n")
     runs = tmp_path / "runs"
     r = subprocess.run(
-        [sys.executable, str(ROOT / "scripts" / "run_experiment.py"),
-         "--next", "--experiments-dir", str(exp),
+        [sys.executable, "-m", "utilities.cli.run", "--next",
+         "--experiments-dir", str(exp),
          "--defaults-dir", str(defaults), "--runs-dir", str(runs)],
         capture_output=True, text=True, cwd=ROOT,
     )

@@ -23,23 +23,23 @@ precommit-install:
 
 # Run an experiment: `make run-exp` (next pending) or `make run-exp ID=2`.
 run-exp:
-	python scripts/run_experiment.py $(if $(ID),--id $(ID),--next)
+	run-experiment $(if $(ID),--id $(ID),--next)
 
 # Discover Verily Workbench resources into .workspace_env (run inside AoU).
 # Installs the R run-path packages first (binaries when available, only if missing).
 setup-workspace:
-	Rscript scripts/ensure_r_packages.R
-	python scripts/setup_workspace.py $(if $(CDR),--cdr $(CDR),)
+	Rscript framework/scripts/ensure_r_packages.R
+	setup-workspace $(if $(CDR),--cdr $(CDR),)
 
 .PHONY: new-exp
 
 # Scaffold the next experiment record: make new-exp SLUG=my-run
 new-exp:
 	@test -n "$(SLUG)" || { echo "ERROR: set SLUG=<kebab-slug>"; exit 1; }
-	python scripts/new_experiment.py $(SLUG)
+	new-experiment $(SLUG)
 
 .PHONY: setup-data
 
 # Local only: fetch Eunomia into data/eunomia.duckdb (gitignored).
 setup-data:
-	Rscript scripts/setup_data.R
+	Rscript framework/scripts/setup_data.R
