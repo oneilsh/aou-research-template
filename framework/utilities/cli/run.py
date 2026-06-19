@@ -14,22 +14,21 @@ def main(argv=None) -> int:
     sel = p.add_mutually_exclusive_group(required=True)
     sel.add_argument("--next", action="store_true", help="run lowest-id pending experiment")
     sel.add_argument("--id", type=int, help="run experiment with this id")
-    p.add_argument("--experiments-dir", default="docs/experiments")
-    p.add_argument("--defaults-dir", default="experiments/defaults")
-    p.add_argument("--runs-dir", default="runs")
+    p.add_argument("--experiments-dir", default="experiments")
+    p.add_argument("--defaults", default="experiments/_defaults.yaml")
     args = p.parse_args(argv)
 
-    exp_dir = Path(args.experiments_dir)
+    exp_root = Path(args.experiments_dir)
     if args.next:
-        rec = find_next_pending(exp_dir)
-        if rec is None:
+        exp = find_next_pending(exp_root)
+        if exp is None:
             print("No pending experiments.", file=sys.stderr)
             return 1
     else:
-        rec = find_by_id(exp_dir, args.id)
+        exp = find_by_id(exp_root, args.id)
 
-    print(f"[run] {rec.name}")
-    return run_experiment(rec, Path(args.defaults_dir), Path(args.runs_dir))
+    print(f"[run] {exp.name}")
+    return run_experiment(exp, Path(args.defaults))
 
 
 if __name__ == "__main__":

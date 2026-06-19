@@ -1,0 +1,7 @@
+# Run configuration for experiment 0001-demo.
+#
+# Merged on top of experiments/_defaults.yaml, then handed to the entrypoint as
+# `--config <path>` (the R entrypoint reads sql_file from it). Paths are
+# repo-relative; the runner runs with the repo root as the working directory.
+entrypoint: Rscript experiments/0001-demo/demo_effect.R
+sql_file: experiments/0001-demo/demo_cohort.sql

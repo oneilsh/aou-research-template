@@ -1,0 +1,6 @@
+# Run configuration for this experiment.
+# Merged on top of experiments/_defaults.yaml, then handed to the entrypoint as
+# `--config <path>`. Paths are repo-relative (runner CWD = repo root).
+# Point `entrypoint` at your analysis script in this folder.
+entrypoint: Rscript experiments/{id_padded}-{slug}/analysis.R
+sql_file: experiments/{id_padded}-{slug}/cohort.sql

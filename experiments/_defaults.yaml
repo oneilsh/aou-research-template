@@ -1,0 +1,10 @@
+# Cross-experiment configuration defaults.
+#
+# The runner merges config in this order (later wins):
+#   1. this file                          (experiments/_defaults.yaml)
+#   2. experiments/<NNNN-slug>/config.yaml
+# It then injects `out_dir` (the experiment's runs/ dir) at dispatch time and
+# passes the merged result to the entrypoint as `--config <path>`.
+#
+# Put values shared by every experiment here; override per-experiment below.
+seed: 42

@@ -1,10 +1,9 @@
-"""Run an experiment record: merge config, dispatch its declared entrypoint,
-and capture *scrubbed* output into an accumulating per-run summary.md.
+"""Run an experiment folder: merge config, dispatch its entrypoint, capture
+*scrubbed* output into the experiment's own runs/summary.md.
 
 The entrypoint can be any command in any language. The effective config is
-written to <run_dir>/config.yaml and passed to the entrypoint as
-`--config <path>`; the runner injects `out_dir` (the run dir) into the config so
-the entrypoint knows where to write artifacts.
+written to <exp>/runs/config.yaml and passed as `--config <path>`; the runner
+injects `out_dir` (the runs dir) so the entrypoint knows where to write.
 """
 from __future__ import annotations
 
@@ -15,33 +14,33 @@ from pathlib import Path
 
 import yaml
 
-from .config import effective_config
+from .config import effective_config, read_frontmatter
 from .sanitize import DROP_PATTERNS, run_subprocess_tee_sanitize
 
-_RECORD_RE = re.compile(r"^(\d{4})-.+\.md$")
+_DIR_RE = re.compile(r"^(\d{4})-.+$")
 
 
-def _records(experiments_dir: Path) -> list[Path]:
-    out = [p for p in experiments_dir.iterdir() if _RECORD_RE.match(p.name)]
+def _experiments(experiments_dir: Path) -> list[Path]:
+    out = [p for p in experiments_dir.iterdir() if p.is_dir() and _DIR_RE.match(p.name)]
     out.sort(key=lambda p: p.name)
     return out
 
 
 def find_by_id(experiments_dir: Path, exp_id: int) -> Path:
-    """Return the record whose filename starts with the zero-padded id."""
     prefix = f"{exp_id:04d}-"
-    for p in _records(experiments_dir):
+    for p in _experiments(experiments_dir):
         if p.name.startswith(prefix):
             return p
-    raise FileNotFoundError(f"no experiment record with id {exp_id} in {experiments_dir}")
+    raise FileNotFoundError(f"no experiment with id {exp_id} in {experiments_dir}")
 
 
 def find_next_pending(experiments_dir: Path) -> Path | None:
-    """Return the lowest-id record with `status: pending`, or None."""
-    from .config import read_frontmatter
-    for p in _records(experiments_dir):
+    for p in _experiments(experiments_dir):
+        readme = p / "README.md"
+        if not readme.exists():
+            continue
         try:
-            fm = read_frontmatter(p)
+            fm = read_frontmatter(readme)
         except ValueError:
             continue
         if fm.get("status") == "pending":
@@ -53,15 +52,13 @@ def _utc_now() -> str:
     return _dt.datetime.now(_dt.timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
 
 
-def run_experiment(record_path: Path, defaults_dir: Path, runs_dir: Path) -> int:
-    """Dispatch one experiment; return the entrypoint's exit code."""
-    cfg = effective_config(record_path, defaults_dir)
+def run_experiment(exp_dir: Path, defaults_path: Path) -> int:
+    cfg = effective_config(exp_dir, defaults_path)
     entrypoint = cfg.get("entrypoint")
     if not entrypoint:
-        raise ValueError(f"{record_path}: effective config missing 'entrypoint'")
+        raise ValueError(f"{exp_dir}: effective config missing 'entrypoint'")
 
-    slug = record_path.stem
-    run_dir = runs_dir / slug
+    run_dir = exp_dir / "runs"
     run_dir.mkdir(parents=True, exist_ok=True)
     cfg["out_dir"] = str(run_dir)
 

@@ -20,7 +20,7 @@ dist/
 .workspace_env
 
 # Run artifacts and local synthetic data (never committed)
-runs/
+experiments/**/runs/
 data/
 
 # Allow tiny synthetic test fixtures only
