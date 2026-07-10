@@ -6,12 +6,18 @@ to walk you through.
 
 ## 1. Install
 
-You need Python 3.10+ and R. Then:
+Do this install on your local machine after cloning the repo. You need Python 3.10+ and R. Then in the repo dir:
 
 ```
 make install            # Python infra + dev tools
 make precommit-install  # git hooks that block data/secrets and strip notebooks
 ```
+
+## 2. Install demo synthetic deps on local machine
+
+The included demo experiment runs an analysis on OMOP-shaped synthetic data locally (via the OHDSI `Eunomia` synthetic data package), 
+or on the AoU workbench (2.0) against real OMOP data. Allowing your agent to run code against local data allows it to complete
+the write/test/debug loop without a rounde-trip to AoU.
 
 Install the R packages the demo uses:
 
@@ -32,7 +38,7 @@ This pulls OHDSI's Eunomia synthetic OMOP data into `data/eunomia.duckdb`
 (gitignored — nothing licensed is committed). It's a real OMOP-shaped database
 you can query exactly like the CDR.
 
-## 3. Run the demo experiment
+## 3. Run the demo experiment locally
 
 ```
 make run-exp ID=1
@@ -52,7 +58,11 @@ aggregates land in `summary.md`. That's the safety model in miniature.
 
 ## 4. The same code in AoU
 
-Inside Verily Workbench, after pulling this repo:
+Inside Verily Workbench, add your cloned repo as a "resource"; it will be loaded into `~/repos/<reponame>/` in 
+the workbench. 
+
+Use the command-line! Claude et al. are very handy with bash and scripts, no need to tie yourself
+to notebooks.
 
 ```
 make setup-workspace    # installs R run-path packages (binaries) + discovers
@@ -77,6 +87,8 @@ adjust the SQL for the AoU path if so.
 
 ## 5. Your own experiment
 
+You can create a new experiment blank *locally* with:
+
 ```
 make new-exp SLUG=my-question
 ```
@@ -84,6 +96,12 @@ make new-exp SLUG=my-question
 This creates `experiments/NNNN-my-question/` with a `config.yaml` and `README.md`.
 Edit the config to point `entrypoint` at your script (which you put in the same
 folder or anywhere repo-relative), and `make run-exp`.
+
+Commit, push to Github, pull back down in AoU, and `make run-exp ID=NNNN` in the workbench.
+
+**PRO TIP**: Have your agent create and manage your experiments. You can copy printed (aggregated) 
+logs and other info and paste it back to your agent to close the loop.
+
 
 ## Plots and the air-gap
 
