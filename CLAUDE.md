@@ -42,7 +42,7 @@ into the committed `summary.md`.
 
 - `framework/utilities/` — pure-Python infrastructure (scrubbing, layered config,
   runner, workspace discovery). Must never import from experiment folders.
-- `experiments/<NNNN-slug>/` — each experiment is self-contained: `config.yaml`,
+- `experiments/<YYYY-MM-DD-slug>/` — each experiment is self-contained: `config.yaml`,
   `README.md`, analysis scripts, and SQL live here. Shared R helpers are in
   `framework/shared/utilities.R`.
 - `experiments/_defaults.yaml` — base config merged under every experiment's

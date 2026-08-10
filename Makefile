@@ -21,9 +21,9 @@ precommit-install:
 	pre-commit install
 	nbstripout --install
 
-# Run an experiment: `make run-exp` (next pending) or `make run-exp ID=2`.
+# Run an experiment: `make run-exp` (next pending) or `make run-exp SLUG=my-run`.
 run-exp:
-	run-experiment $(if $(ID),--id $(ID),--next)
+	run-experiment $(if $(SLUG),--slug $(SLUG),--next)
 
 # Discover Verily Workbench resources into .workspace_env (run inside AoU).
 # Installs the R run-path packages first (binaries when available, only if missing).
