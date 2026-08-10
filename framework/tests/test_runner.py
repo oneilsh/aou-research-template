@@ -1,6 +1,7 @@
 import sys
+import pytest
 from pathlib import Path
-from utilities.runner import find_by_id, find_next_pending, run_experiment
+from utilities.runner import find_by_slug, find_next_pending, run_experiment
 
 
 def _mk(exp_root, name, status):
@@ -9,16 +10,32 @@ def _mk(exp_root, name, status):
     return d
 
 
-def test_find_by_id_and_next(tmp_path):
+def test_find_by_slug_and_next(tmp_path):
     exp = tmp_path / "experiments"; exp.mkdir()
-    _mk(exp, "0001-a", "done"); _mk(exp, "0002-b", "pending")
-    assert find_by_id(exp, 1).name == "0001-a"
-    assert find_next_pending(exp).name == "0002-b"
+    _mk(exp, "2026-06-19-a", "done"); _mk(exp, "2026-06-20-b", "pending")
+    assert find_by_slug(exp, "a").name == "2026-06-19-a"
+    assert find_next_pending(exp).name == "2026-06-20-b"
+
+
+def test_find_by_slug_missing(tmp_path):
+    exp = tmp_path / "experiments"; exp.mkdir()
+    _mk(exp, "2026-06-19-a", "done")
+    with pytest.raises(FileNotFoundError):
+        find_by_slug(exp, "nope")
+
+
+def test_find_by_slug_ambiguous_across_dates(tmp_path):
+    exp = tmp_path / "experiments"; exp.mkdir()
+    _mk(exp, "2026-06-19-a", "done"); _mk(exp, "2026-07-01-a", "pending")
+    with pytest.raises(ValueError):
+        find_by_slug(exp, "a")
+    # the full folder name is the escape hatch
+    assert find_by_slug(exp, "2026-07-01-a").name == "2026-07-01-a"
 
 
 def test_run_experiment_scrubs_and_records(tmp_path):
     exp = tmp_path / "experiments"; exp.mkdir()
-    d = _mk(exp, "0001-demo", "pending")
+    d = _mk(exp, "2026-06-19-demo", "pending")
     defaults = tmp_path / "_defaults.yaml"; defaults.write_text("seed: 1\n")
     stub = tmp_path / "stub.py"
     stub.write_text(

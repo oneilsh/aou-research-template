@@ -6,14 +6,14 @@ import argparse
 import sys
 from pathlib import Path
 
-from utilities.runner import find_by_id, find_next_pending, run_experiment
+from utilities.runner import find_by_slug, find_next_pending, run_experiment
 
 
 def main(argv=None) -> int:
     p = argparse.ArgumentParser(description=__doc__)
     sel = p.add_mutually_exclusive_group(required=True)
-    sel.add_argument("--next", action="store_true", help="run lowest-id pending experiment")
-    sel.add_argument("--id", type=int, help="run experiment with this id")
+    sel.add_argument("--next", action="store_true", help="run earliest pending experiment")
+    sel.add_argument("--slug", help="run experiment with this slug (or full YYYY-MM-DD-slug folder name)")
     p.add_argument("--experiments-dir", default="experiments")
     p.add_argument("--defaults", default="experiments/_defaults.yaml")
     args = p.parse_args(argv)
@@ -25,7 +25,7 @@ def main(argv=None) -> int:
             print("No pending experiments.", file=sys.stderr)
             return 1
     else:
-        exp = find_by_id(exp_root, args.id)
+        exp = find_by_slug(exp_root, args.slug)
 
     print(f"[run] {exp.name}")
     return run_experiment(exp, Path(args.defaults))
