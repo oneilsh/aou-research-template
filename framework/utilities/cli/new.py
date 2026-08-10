@@ -1,27 +1,19 @@
 #!/usr/bin/env python
-"""Scaffold the next experiment folder from experiments/_template/."""
+"""Scaffold a dated experiment folder from experiments/_template/."""
 from __future__ import annotations
 
 import argparse
 import datetime as _dt
-import re
 import sys
 from pathlib import Path
 
-_DIR_RE = re.compile(r"^(\d{4})-.+$")
-
-
-def next_id(experiments_dir: Path) -> int:
-    ids = [int(m.group(1)) for p in experiments_dir.iterdir()
-           if p.is_dir() and (m := _DIR_RE.match(p.name))]
-    return (max(ids) + 1) if ids else 1
-
 
 def scaffold(slug: str, experiments_dir: Path, template_dir: Path, today: str) -> Path:
-    nid = next_id(experiments_dir)
-    out_dir = experiments_dir / f"{nid:04d}-{slug}"
+    out_dir = experiments_dir / f"{today}-{slug}"
+    if out_dir.exists():
+        raise FileExistsError(f"{out_dir} already exists")
     out_dir.mkdir(parents=True)
-    subs = dict(id=nid, id_padded=f"{nid:04d}", slug=slug, date=today)
+    subs = dict(slug=slug, date=today)
     for src in sorted(template_dir.iterdir()):
         if src.is_file():
             (out_dir / src.name).write_text(src.read_text().format(**subs))
