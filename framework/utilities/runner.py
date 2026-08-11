@@ -17,7 +17,7 @@ import yaml
 from .config import effective_config, read_frontmatter
 from .sanitize import DROP_PATTERNS, run_subprocess_tee_sanitize
 
-_DIR_RE = re.compile(r"^(\d{4})-.+$")
+_DIR_RE = re.compile(r"^(\d{4}-\d{2}-\d{2})-.+$")
 
 
 def _experiments(experiments_dir: Path) -> list[Path]:
@@ -26,12 +26,25 @@ def _experiments(experiments_dir: Path) -> list[Path]:
     return out
 
 
-def find_by_id(experiments_dir: Path, exp_id: int) -> Path:
-    prefix = f"{exp_id:04d}-"
-    for p in _experiments(experiments_dir):
-        if p.name.startswith(prefix):
+def _slug_of(name: str) -> str:
+    return name[11:]  # strip the "YYYY-MM-DD-" prefix
+
+
+def find_by_slug(experiments_dir: Path, slug: str) -> Path:
+    exps = _experiments(experiments_dir)
+    for p in exps:  # exact full-name match is the escape hatch for cross-date dupes
+        if p.name == slug:
             return p
-    raise FileNotFoundError(f"no experiment with id {exp_id} in {experiments_dir}")
+    matches = [p for p in exps if _slug_of(p.name) == slug]
+    if not matches:
+        raise FileNotFoundError(f"no experiment with slug {slug!r} in {experiments_dir}")
+    if len(matches) > 1:
+        names = ", ".join(p.name for p in matches)
+        raise ValueError(
+            f"slug {slug!r} is ambiguous across dates: {names}; "
+            f"pass the full folder name instead"
+        )
+    return matches[0]
 
 
 def find_next_pending(experiments_dir: Path) -> Path | None:

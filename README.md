@@ -28,5 +28,5 @@ own study repo from it — a clean copy with its own history, not a fork. Then
 rename the project in `pyproject.toml` and work through `GETTING_STARTED.md`, or
 open it with Claude and say "walk me through getting started."
 
-The shipped `0001-demo` experiment is a worked example you run once to see the
+The shipped `2026-06-19-demo` experiment is a worked example you run once to see the
 loop; keep it as a reference or replace it with your own.

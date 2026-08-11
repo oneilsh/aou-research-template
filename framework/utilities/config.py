@@ -2,7 +2,7 @@
 
 Resolution order (lowest to highest precedence):
     experiments/_defaults.yaml            # cross-experiment defaults
-    experiments/<NNNN-slug>/config.yaml   # this experiment's config
+    experiments/<YYYY-MM-DD-slug>/config.yaml   # this experiment's config
 
 The experiment's README.md frontmatter carries only run *metadata* (status,
 created) — not config — and is read separately via read_frontmatter().

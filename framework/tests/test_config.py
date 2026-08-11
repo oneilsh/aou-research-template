@@ -29,7 +29,7 @@ def test_load_defaults(tmp_path):
 
 def test_effective_config_merges(tmp_path):
     d = _write(tmp_path / "_defaults.yaml", "seed: 42\nentrypoint: base\n")
-    exp = tmp_path / "0001-demo"; exp.mkdir()
+    exp = tmp_path / "2026-06-19-demo"; exp.mkdir()
     _write(exp / "config.yaml", "entrypoint: Rscript x.R\nseed: 7\n")
     cfg = effective_config(exp, d)
     assert cfg["entrypoint"] == "Rscript x.R"

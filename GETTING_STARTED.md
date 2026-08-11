@@ -41,18 +41,18 @@ you can query exactly like the CDR.
 ## 3. Run the demo experiment locally
 
 ```
-make run-exp ID=1
+make run-exp SLUG=demo
 ```
 
-This runs experiment `0001-demo`: a t-test of per-person condition counts
+This runs experiment `2026-06-19-demo`: a t-test of per-person condition counts
 between the two most populous gender groups (labeled from the `concept` table),
 plus one aggregate plot. Look at what it wrote:
 
-- `experiments/0001-demo/runs/summary.md` — the scrubbed record. This is what's
+- `experiments/2026-06-19-demo/runs/summary.md` — the scrubbed record. This is what's
   safe to copy back. Notice it has the t-test and CI, but no per-person rows.
-- `experiments/0001-demo/runs/demo_effect.png` — an aggregate-only plot.
+- `experiments/2026-06-19-demo/runs/demo_effect.png` — an aggregate-only plot.
 
-The query in `experiments/0001-demo/demo_cohort.sql` returns per-person rows,
+The query in `experiments/2026-06-19-demo/demo_cohort.sql` returns per-person rows,
 but those stay inside the R process; only aggregates are printed, so only
 aggregates land in `summary.md`. That's the safety model in miniature.
 
@@ -68,7 +68,7 @@ to notebooks.
 make setup-workspace    # installs R run-path packages (binaries) + discovers
                         #   your project/CDR/buckets into .workspace_env
 source .workspace_env
-make run-exp ID=1
+make run-exp SLUG=demo
 ```
 
 `setup-workspace` installs the R packages the BigQuery path needs (`DBI`,
@@ -78,7 +78,7 @@ via Posit Package Manager when your image's distro is detected. So the manual
 
 `pick_connection()` (in `framework/shared/utilities.R`) sees `WORKSPACE_CDR` is
 set and connects to BigQuery instead of DuckDB — the same `demo_cohort.sql` runs
-against the real CDR. Review `experiments/0001-demo/runs/summary.md`, then copy
+against the real CDR. Review `experiments/2026-06-19-demo/runs/summary.md`, then copy
 the aggregate result back to your laptop / the agent.
 
 Note on SQL: the demo SQL is kept simple so one query runs on both DuckDB and
@@ -93,7 +93,7 @@ You can create a new experiment blank *locally* with:
 make new-exp SLUG=my-question
 ```
 
-This creates `experiments/NNNN-my-question/` with a `config.yaml` and `README.md`.
+This creates `experiments/<today>-my-question/` (a dated folder) with a `config.yaml` and `README.md`.
 Edit the config to point `entrypoint` at your script (which you put in the same
 folder or anywhere repo-relative), and `make run-exp`.
 
