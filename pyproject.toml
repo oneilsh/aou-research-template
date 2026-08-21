@@ -11,6 +11,8 @@ dev = ["pytest>=8.0", "ruff>=0.5", "pre-commit>=3.7", "nbstripout>=0.7"]
 [project.scripts]
 run-experiment = "utilities.cli.run:main"
 new-experiment = "utilities.cli.new:main"
+new-decision = "utilities.cli.newdoc:main_decision"
+new-insight = "utilities.cli.newdoc:main_insight"
 setup-workspace = "utilities.workspace:main"
 
 [build-system]
