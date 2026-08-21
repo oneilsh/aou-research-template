@@ -97,11 +97,30 @@ This creates `experiments/<today>-my-question/` (a dated folder) with a `config.
 Edit the config to point `entrypoint` at your script (which you put in the same
 folder or anywhere repo-relative), and `make run-exp`.
 
-Commit, push to Github, pull back down in AoU, and `make run-exp ID=NNNN` in the workbench.
+Commit, push to Github, pull back down in AoU, and `make run-exp SLUG=my-question` in the workbench.
 
 **PRO TIP**: Have your agent create and manage your experiments. You can copy printed (aggregated) 
 logs and other info and paste it back to your agent to close the loop.
 
+
+## 6. Optional: keep the reasoning legible
+
+As a repo grows under heavy agent assistance, the code accumulates faster than
+the *why* behind it. Three opt-in logging systems keep that reasoning durable —
+**decisions** (ADRs), **insights** (empirical findings from runs), and a
+**review log** (walkthrough sign-off). They ship off; turn on what you want:
+
+```
+make enable-meta-process         # all three (or enable-decisions / -insights / -reviews)
+make new-decision SLUG=why-duckdb-locally
+make new-insight  SLUG=eunomia-gender-skew
+```
+
+Each entry is a dated Markdown file you (or your agent) fill in. For a guided
+tour of the codebase, just say **"walk me through the framework"** — a bundled
+skill runs the walkthrough and tracks where you left off. Full rationale and
+formats: [docs/META_process.md](docs/META_process.md). None of this is required
+to run experiments.
 
 ## Plots and the air-gap
 

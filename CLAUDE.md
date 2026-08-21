@@ -68,6 +68,21 @@ verified by running it locally against the Eunomia fixture.
 - No data files, secrets, or large binaries staged (`make lint` runs the hooks).
 - Any new per-person output is covered by a `PATIENT_PATTERNS` entry.
 
+## Optional meta-process logs (opt-in)
+
+Three legibility systems are OFF unless enabled; each turns on when its artifact
+exists (`make enable-decisions|insights|reviews`, or `make enable-meta-process`
+for all). Formats and rationale: GETTING_STARTED.md and docs/META_process.md.
+
+- If `docs/decisions/` exists — record non-obvious architectural choices as ADRs
+  (`make new-decision SLUG=<slug>` → `docs/decisions/YYYY-MM-DD-<slug>.md`).
+  Supersede by filename; never silently overwrite a past decision.
+- If `docs/insights/` exists — record empirical findings from runs
+  (`make new-insight SLUG=<slug>`), each with its setting context.
+- If `docs/REVIEW_LOG.md` exists — after a substantive walkthrough or refactor,
+  prepend a dated, impersonal entry (area reviewed, what shipped, issues caught).
+  Guided walkthroughs use the bundled `code-walkthrough` skill.
+
 ## Chat rendering
 
 Agent chat here renders as plain text — no LaTeX. Use plain Greek letters and
